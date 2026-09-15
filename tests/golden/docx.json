@@ -1,0 +1,101 @@
+{
+  "body": {
+    "content": [
+      {
+        "attrs": {
+          "level": 1,
+          "lineHeight": 1.5,
+          "spaceAfter": 8.0
+        },
+        "content": [
+          {
+            "text": "A local document — català, español",
+            "type": "text"
+          }
+        ],
+        "type": "heading"
+      },
+      {
+        "attrs": {
+          "lineHeight": 1.5,
+          "spaceAfter": 8.0
+        },
+        "content": [
+          {
+            "text": "A&B <C> remains readable, including café and Ελληνικά.",
+            "type": "text"
+          }
+        ],
+        "type": "paragraph"
+      },
+      {
+        "content": [
+          {
+            "content": [
+              {
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "attrs": {
+                      "lineHeight": 1.5,
+                      "spaceAfter": 8.0
+                    },
+                    "content": [
+                      {
+                        "text": "Budget",
+                        "type": "text"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "type": "tableCell"
+              },
+              {
+                "attrs": {
+                  "colspan": 1,
+                  "rowspan": 1
+                },
+                "content": [
+                  {
+                    "attrs": {
+                      "lineHeight": 1.5,
+                      "spaceAfter": 8.0
+                    },
+                    "content": [
+                      {
+                        "text": "120.50",
+                        "type": "text"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "type": "tableCell"
+              }
+            ],
+            "type": "tableRow"
+          }
+        ],
+        "type": "table"
+      }
+    ],
+    "type": "doc"
+  },
+  "kind": "writer",
+  "page": {
+    "footer": "Nexa fixture",
+    "header": "Confidential draft",
+    "height": 1123.0,
+    "margins": [
+      76.0,
+      76.0,
+      76.0,
+      76.0
+    ],
+    "width": 794.0
+  }
+}

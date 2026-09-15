@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Nexa Office
+Comment=Local-first Writer, Sheets and Slides
+Exec=nexa-office %F
+Icon=nexa-office
+Terminal=false
+Categories=Office;
+StartupWMClass=nexa-office
+MimeType=application/vnd.nexa.document;application/vnd.nexa.spreadsheet;application/vnd.nexa.presentation;

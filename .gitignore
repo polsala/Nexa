@@ -1,0 +1,13 @@
+node_modules/
+dist/
+target/
+apps/desktop/src-tauri/gen/
+.cache/
+artifacts/
+test-results/
+playwright-report/
+*.log
+.env
+*.key
+*.pem
+core.[0-9]*

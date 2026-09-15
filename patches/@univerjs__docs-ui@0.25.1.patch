@@ -1,0 +1,34 @@
+diff --git a/lib/cjs/index.js b/lib/cjs/index.js
+index 17d6d0c3d3fd8f3e7dd4d64a811bba786bc2df52..57ea09ba81dff60e0948cb4b9828a84e791d07ee 100644
+--- a/lib/cjs/index.js
++++ b/lib/cjs/index.js
+@@ -7593,6 +7593,12 @@ let DocSelectionRenderService = class DocSelectionRenderService extends _univerj
+ 		return document.activeElement === this._input;
+ 	}
+ 	focus() {
++		// Nexa integration: delayed cell-editor initialization must not focus a
++		// hidden/inert tab or a detached host (WebKit can blur the active input).
++		const host = this._layoutService.rootContainerElement;
++		if (!host?.isConnected || host.closest("[inert]")) return;
++		const modal = document.querySelector("dialog:modal");
++		if (modal && !modal.contains(host)) return;
+ 		this._input.focus();
+ 	}
+ 	blur() {
+diff --git a/lib/es/index.js b/lib/es/index.js
+index 2ba09078a3328a67f6d452d3b203360ea71b7e6e..0501a9c40ce53657b2d7e30da827e5d83e568ebe 100644
+--- a/lib/es/index.js
++++ b/lib/es/index.js
+@@ -7592,6 +7592,12 @@ let DocSelectionRenderService = class DocSelectionRenderService extends RxDispos
+ 		return document.activeElement === this._input;
+ 	}
+ 	focus() {
++		// Nexa integration: delayed cell-editor initialization must not focus a
++		// hidden/inert tab or a detached host (WebKit can blur the active input).
++		const host = this._layoutService.rootContainerElement;
++		if (!host?.isConnected || host.closest("[inert]")) return;
++		const modal = document.querySelector("dialog:modal");
++		if (modal && !modal.contains(host)) return;
+ 		this._input.focus();
+ 	}
+ 	blur() {

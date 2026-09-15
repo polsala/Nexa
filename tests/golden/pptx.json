@@ -1,0 +1,40 @@
+{
+  "deck": {
+    "height": 720.0,
+    "slides": [
+      {
+        "background": "#ffffff",
+        "name": "Slide 1",
+        "notes": "Explain the real workflow, not a mockup.",
+        "objects": [
+          {
+            "align": "left",
+            "bold": false,
+            "color": "#182b29",
+            "fill": "transparent",
+            "fontFamily": "Arial",
+            "fontSize": 42.0,
+            "height": 200.0,
+            "italic": false,
+            "kind": "text",
+            "rotation": 0.0,
+            "stroke": "transparent",
+            "strokeWidth": 0.0,
+            "text": "An independent presentation",
+            "width": 1000.0,
+            "x": 80.0,
+            "y": 100.0
+          }
+        ]
+      },
+      {
+        "background": "#ffffff",
+        "name": "Slide 2",
+        "notes": "",
+        "objects": []
+      }
+    ],
+    "width": 1280.0
+  },
+  "kind": "slides"
+}

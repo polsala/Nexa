@@ -1,0 +1,67 @@
+name: Verify
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+      - name: Package manager
+        run: corepack enable
+      - name: Rust
+        run: rustup toolchain install 1.94.1 --profile minimal --component rustfmt --component clippy
+      - run: rustup default 1.94.1
+      - name: Linux system dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev patchelf webkit2gtk-driver xvfb dbus-x11
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm run licenses
+      - run: pnpm audit --prod --audit-level high
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - run: cargo test --workspace --locked
+      - run: pnpm build
+      - name: Browser workflow tests
+        run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Production native binary
+        run: pnpm desktop:build --no-bundle
+      - name: Native desktop workflows (WebKitGTK)
+        if: runner.os == 'Linux'
+        env:
+          XDG_DATA_HOME: ${{ runner.temp }}/nexa-native-data
+          XDG_CONFIG_HOME: ${{ runner.temp }}/nexa-native-config
+          XDG_CACHE_HOME: ${{ runner.temp }}/nexa-native-cache
+        run: |
+          cargo install tauri-driver --version 2.0.6 --locked
+          pnpm fixtures
+          dbus-run-session -- xvfb-run -a node scripts/native-qa.mjs
+      - uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: failure-evidence-${{ matrix.os }}
+          path: |
+            test-results
+            playwright-report
+            artifacts/qa
+            artifacts/native-qa
+          if-no-files-found: ignore

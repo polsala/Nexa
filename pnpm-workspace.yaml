@@ -1,0 +1,11 @@
+packages:
+  - packages/*
+  - apps/desktop
+onlyBuiltDependencies:
+  - esbuild
+  - "@swc/core"
+overrides:
+  # Univer 0.25.1 pins an affected patch; retain the same major/API.
+  "@univerjs/core>nanoid": 5.1.16
+patchedDependencies:
+  '@univerjs/docs-ui@0.25.1': patches/@univerjs__docs-ui@0.25.1.patch

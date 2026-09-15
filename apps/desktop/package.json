@@ -1,0 +1,1 @@
+{"name":"@nexa/desktop","private":true,"version":"0.1.0","type":"module","scripts":{"dev":"pnpm -w dev","build":"pnpm -w build"}}

@@ -1,0 +1,78 @@
+{
+  "kind": "sheets",
+  "workbook": {
+    "charts": [],
+    "extensions": {},
+    "sheets": [
+      {
+        "cells": {
+          "0": {
+            "0": {
+              "format": {
+                "align": "general",
+                "background": "#ffffff",
+                "color": "#202b29",
+                "fontFamily": "Calibri",
+                "fontSize": 11.0,
+                "numberFormat": "0.00"
+              },
+              "value": 12.5
+            }
+          },
+          "1": {
+            "0": {
+              "format": {
+                "align": "general",
+                "background": "#ffffff",
+                "color": "#202b29",
+                "fontFamily": "Calibri",
+                "fontSize": 11.0,
+                "numberFormat": "0.00"
+              },
+              "value": 20.0
+            }
+          },
+          "2": {
+            "0": {
+              "format": {
+                "align": "general",
+                "background": "#ffffff",
+                "color": "#202b29",
+                "fontFamily": "Calibri",
+                "fontSize": 11.0,
+                "numberFormat": "0.00"
+              },
+              "formula": "=SUM(A1:A2)",
+              "value": 32.5
+            }
+          }
+        },
+        "columnCount": 26,
+        "columnDimensions": {},
+        "extensions": {},
+        "freeze": [
+          1,
+          0
+        ],
+        "merges": [],
+        "name": "Sheet 1",
+        "rowCount": 1000,
+        "rowDimensions": {}
+      },
+      {
+        "cells": {},
+        "columnCount": 26,
+        "columnDimensions": {},
+        "extensions": {},
+        "freeze": [
+          0,
+          0
+        ],
+        "merges": [],
+        "name": "Résumé",
+        "rowCount": 1000,
+        "rowDimensions": {}
+      }
+    ]
+  }
+}

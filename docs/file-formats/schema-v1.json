@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexa.invalid/schemas/document-v1.json",
+  "title": "Nexa semantic document version 1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "title",
+    "createdAt",
+    "modifiedAt",
+    "content"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "format": "uuid" },
+    "title": { "type": "string", "maxLength": 4096 },
+    "createdAt": { "type": "integer", "minimum": 0 },
+    "modifiedAt": { "type": "integer", "minimum": 0 },
+    "revision": { "type": "integer", "minimum": 0, "default": 0 },
+    "metadata": { "type": "object" },
+    "recoveryDraft": {
+      "type": "object",
+      "required": ["version", "sheetId", "row", "column", "text"],
+      "description": "Optional recovery-only unfinished cell input. Valid only for an existing cell coordinate in a Sheets document. UTF-8 text is limited to 1 MiB.",
+      "properties": {
+        "version": { "const": 1 },
+        "sheetId": { "type": "string", "minLength": 1 },
+        "row": { "type": "integer", "minimum": 0, "maximum": 1048575 },
+        "column": { "type": "integer", "minimum": 0, "maximum": 16383 },
+        "text": { "type": "string", "maxLength": 1048576 }
+      }
+    },
+    "content": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["kind", "body", "page"],
+          "properties": {
+            "kind": { "const": "writer" },
+            "body": { "$ref": "#/$defs/textNode" },
+            "page": { "$ref": "#/$defs/page" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "workbook"],
+          "properties": {
+            "kind": { "const": "sheets" },
+            "workbook": { "$ref": "#/$defs/workbook" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["kind", "deck"],
+          "properties": {
+            "kind": { "const": "slides" },
+            "deck": { "$ref": "#/$defs/deck" }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "textNode": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": [
+            "doc",
+            "paragraph",
+            "heading",
+            "text",
+            "hardBreak",
+            "pageBreak",
+            "horizontalRule",
+            "bulletList",
+            "orderedList",
+            "listItem",
+            "blockquote",
+            "codeBlock",
+            "table",
+            "tableRow",
+            "tableCell",
+            "tableHeader",
+            "image"
+          ]
+        },
+        "text": { "type": "string" },
+        "attrs": { "type": "object" },
+        "content": { "type": "array", "items": { "$ref": "#/$defs/textNode" } },
+        "marks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": { "type": "string" },
+              "attrs": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
+    "page": {
+      "type": "object",
+      "required": ["width", "height", "margins"],
+      "properties": {
+        "width": { "type": "number", "minimum": 100, "maximum": 10000 },
+        "height": { "type": "number", "minimum": 100, "maximum": 10000 },
+        "margins": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "type": "number", "minimum": 0 }
+        },
+        "header": { "type": "string" },
+        "footer": { "type": "string" }
+      }
+    },
+    "range": {
+      "type": "object",
+      "required": ["startRow", "endRow", "startColumn", "endColumn"],
+      "properties": {
+        "startRow": { "type": "integer", "minimum": 0, "maximum": 1048575 },
+        "endRow": { "type": "integer", "minimum": 0, "maximum": 1048575 },
+        "startColumn": { "type": "integer", "minimum": 0, "maximum": 16383 },
+        "endColumn": { "type": "integer", "minimum": 0, "maximum": 16383 }
+      }
+    },
+    "cell": {
+      "type": "object",
+      "properties": {
+        "value": { "type": ["string", "number", "boolean", "null"] },
+        "formula": { "type": "string", "pattern": "^=", "maxLength": 32768 },
+        "format": { "type": "object" },
+        "extensions": { "type": "object" },
+        "richText": {}
+      }
+    },
+    "worksheet": {
+      "type": "object",
+      "required": ["id", "name", "rowCount", "columnCount"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "rowCount": { "type": "integer", "minimum": 1, "maximum": 1048576 },
+        "columnCount": { "type": "integer", "minimum": 1, "maximum": 16384 },
+        "cells": {
+          "type": "object",
+          "propertyNames": { "pattern": "^(0|[1-9][0-9]*)$" },
+          "additionalProperties": {
+            "type": "object",
+            "propertyNames": { "pattern": "^(0|[1-9][0-9]*)$" },
+            "additionalProperties": { "$ref": "#/$defs/cell" }
+          }
+        },
+        "merges": { "type": "array", "items": { "$ref": "#/$defs/range" } },
+        "freeze": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "rowDimensions": { "type": "object" },
+        "columnDimensions": { "type": "object" },
+        "extensions": { "type": "object" }
+      }
+    },
+    "workbook": {
+      "type": "object",
+      "required": ["sheets"],
+      "properties": {
+        "sheets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/worksheet" }
+        },
+        "extensions": { "type": "object" },
+        "charts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "kind", "title", "sheetId", "range"],
+            "properties": {
+              "id": { "type": "string" },
+              "kind": { "enum": ["bar", "line", "pie", "scatter"] },
+              "title": { "type": "string" },
+              "sheetId": { "type": "string" },
+              "range": { "$ref": "#/$defs/range" }
+            }
+          }
+        }
+      }
+    },
+    "slideObject": {
+      "type": "object",
+      "required": ["id", "kind", "x", "y", "width", "height"],
+      "properties": {
+        "id": { "type": "string" },
+        "kind": {
+          "enum": ["text", "rectangle", "ellipse", "line", "arrow", "image"]
+        },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 },
+        "rotation": { "type": "number" },
+        "fontSize": { "type": "number" },
+        "fontFamily": { "type": "string" },
+        "text": { "type": "string" },
+        "fill": { "type": "string" },
+        "stroke": { "type": "string" },
+        "strokeWidth": { "type": "number" },
+        "color": { "type": "string" },
+        "bold": { "type": "boolean" },
+        "italic": { "type": "boolean" },
+        "align": { "type": "string" },
+        "richText": { "$ref": "#/$defs/textNode" },
+        "src": {
+          "type": "string",
+          "pattern": "^(asset://assets/|data:image/(png|jpeg|webp);base64,)"
+        }
+      }
+    },
+    "deck": {
+      "type": "object",
+      "required": ["width", "height", "slides"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 20000 },
+        "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 20000 },
+        "slides": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10000,
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "background", "objects"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" },
+              "background": { "type": "string" },
+              "notes": { "type": "string" },
+              "objects": {
+                "type": "array",
+                "maxItems": 10000,
+                "items": { "$ref": "#/$defs/slideObject" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

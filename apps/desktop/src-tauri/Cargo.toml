@@ -1,0 +1,33 @@
+[package]
+name = "nexa-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+default-run = "nexa-office"
+[features]
+default = []
+signed-updates = ["dep:tauri-plugin-updater"]
+[lib]
+name = "nexa_desktop"
+crate-type = ["staticlib", "cdylib", "rlib"]
+[[bin]]
+name = "nexa-office"
+path = "src/main.rs"
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-updater = { version = "2", optional = true }
+native-services.workspace = true
+document-model.workspace = true
+nexafile.workspace = true
+office-io.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+base64.workspace = true
+uuid.workspace = true
+imagesize = "0.14"
+notify = "8"

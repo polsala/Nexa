@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Nexa ZIP manifest version 1",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "mime",
+    "documentId",
+    "editor",
+    "editorVersion",
+    "checksums"
+  ],
+  "properties": {
+    "format": { "const": "nexa" },
+    "schemaVersion": { "const": 1 },
+    "mime": {
+      "enum": [
+        "application/vnd.nexa.document",
+        "application/vnd.nexa.spreadsheet",
+        "application/vnd.nexa.presentation"
+      ]
+    },
+    "documentId": { "type": "string", "format": "uuid" },
+    "editor": { "type": "string" },
+    "editorVersion": { "type": "string" },
+    "checksums": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+    }
+  },
+  "additionalProperties": true
+}

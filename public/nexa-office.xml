@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/vnd.nexa.document">
+    <comment>Nexa Document</comment>
+    <comment xml:lang="ca">Document Nexa</comment>
+    <comment xml:lang="es">Documento Nexa</comment>
+    <glob pattern="*.nxd"/>
+    <sub-class-of type="application/zip"/>
+    <icon name="nexa-office"/>
+  </mime-type>
+  <mime-type type="application/vnd.nexa.spreadsheet">
+    <comment>Nexa Spreadsheet</comment>
+    <comment xml:lang="ca">Full de càlcul Nexa</comment>
+    <comment xml:lang="es">Hoja de cálculo Nexa</comment>
+    <glob pattern="*.nxs"/>
+    <sub-class-of type="application/zip"/>
+    <icon name="nexa-office"/>
+  </mime-type>
+  <mime-type type="application/vnd.nexa.presentation">
+    <comment>Nexa Presentation</comment>
+    <comment xml:lang="ca">Presentació Nexa</comment>
+    <comment xml:lang="es">Presentación Nexa</comment>
+    <glob pattern="*.nxp"/>
+    <sub-class-of type="application/zip"/>
+    <icon name="nexa-office"/>
+  </mime-type>
+</mime-info>
